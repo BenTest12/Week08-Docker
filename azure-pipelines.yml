@@ -1,16 +1,53 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+name: ben1212docker
 
 trigger:
 - main
+#- feature/*
 
-pool: Docker
+pool:
+  vmImage: ubuntu-latest
 
-steps:
-- task: Docker@2
-  inputs:
-    command: 'build'
-    Dockerfile: 'D:\לימודים\Sela\AzureDevops\Week08-Docker\Dockerfile'
+variables:
+  YOURVARKEYS: YOURVARVALUES
+  #...
 
+stages:
+
+# Continuous Integration Process
+- stage: CI
+  jobs:
+  - job: BuildAndPushDocker
+    workspace: 
+      clean: all
+    steps:
+    - <<YOUR TASKS>>
+
+# Continuous Deployment Process for Staging Environment
+- stage: DeployToStaging
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  jobs:
+  - deployment: staging
+    displayName: Deploy to Staging
+    environment:
+      name: <<YOUR ENVIRONMENT NAME>>
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - <<YOUR TASKS>>
+          
+# Continuous Delivery Process for Production Environment
+- stage: DeployToProduction
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  jobs:
+  - deployment: production
+    displayName: Deploy to Production
+    environment:
+      name: <<YOUR ENVIRONMENT NAME>>
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - <<YOUR TASKS>>

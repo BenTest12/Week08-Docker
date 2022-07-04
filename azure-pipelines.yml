@@ -4,8 +4,9 @@ trigger:
 - main
 #- feature/*
 
-pool:
-  vmImage: ubuntu-latest
+pool: dockhost000001
+  #vmImage: ubuntu-latest
+
 
 variables:
   - group: "Staging Variables"

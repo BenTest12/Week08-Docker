@@ -20,6 +20,24 @@ stages:
     workspace: 
       clean: all
     steps:
+    - task: ChocolateyToolInstaller@0
+      inputs:
+        force: true
+      
+    - task: ChocolateyCommand@0
+    inputs:
+      command: 'install'
+      installPackageId: 'docker-desktop'
+      installPackageVersion: '*'
+
+
+# Continuous Integration Process
+- stage: CI
+  jobs:
+  - job: BuildAndPushDocker
+    workspace: 
+      clean: all
+    steps:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce'

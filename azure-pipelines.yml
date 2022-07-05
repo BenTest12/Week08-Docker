@@ -30,8 +30,8 @@ stages:
 
       - task: Docker@2
         inputs:
-          containerRegistry: 'ben1213test'
-          repository: 'weight-app-repo'
+          containerRegistry: 'weight-app-repo'
+          repository: 'weightapprepo'
           command: 'buildAndPush'
           Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
 

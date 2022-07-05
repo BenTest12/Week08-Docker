@@ -50,6 +50,8 @@ stages:
                 apt-cache policy docker-ce
                 sudo apt install docker-ce -y
                 sudo usermod -aG docker ${USER}
+                sudo chmod 666 /var/run/docker.sock 
+                sudo chown ubuntu:docker /var/run/docker.sock
           
           - task: DockerInstaller@0
             displayName: 'Install Docker 17.09.0-ce'
@@ -67,7 +69,7 @@ stages:
           - task: CmdLine@2
             displayName: Pull image
             inputs:
-              script: 'sudo docker pull $(containerRegLogin)/$(imageRepository)'
+              script: ' docker pull $(containerRegLogin)/$(imageRepository)'
 
 
           - task: Bash@3

@@ -11,21 +11,9 @@ pool: Docker
 # variables:
 #   - group: "Staging Variables"
 
+# Continuous Integration Process
+
 stages:
-
-# Continuous Integration Process
-- stage: dockinstall
-  jobs:
-  - job: BuildAndPushDocker
-    workspace: 
-      clean: all
-    steps:
-    - task: ChocolateyToolInstaller@0
-      inputs:
-        force: true
-      
-
-# Continuous Integration Process
 - stage: CI
   jobs:
   - job: BuildAndPushDocker

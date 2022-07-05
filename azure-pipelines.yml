@@ -69,12 +69,12 @@ stages:
           - task: CmdLine@2
             displayName: Pull image
             inputs:
-              script: ' docker pull $(containerRegLogin)/$(imageRepository)'
+              script: ' docker pull $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'
 
           - task: Bash@3
             inputs:
              targetType: 'inline'
-             script: 'docker run --restart=always  -d --name weight-app -p 8080:8080 -e PGHOST=$(SPGHOST)   -e PORT=8080    -e  HOST=''0.0.0.0''  -e PGUSERNAME=$(SPGUSER)  -e PGDATABASE=postgres  -e  PGPASSWORD=$(SPGPASS)  -e  PGPORT=5432   -e HOST_URL=$(SHOST_URL)   -e COOKIE_ENCRYPT_PWD=$(SCOOKIE)  -e  NODE_ENV=development  -e  OKTA_ORG_URL=$(SOKTA_ORG)   -e  OKTA_CLIENT_ID=$(SOKTA_CLIENT)   -e OKTA_CLIENT_SECRET=$(SOKTA_SECRET)  $(containerRegLogin)/$(imageRepository)'
+             script: 'docker run --restart=always  -d --name weight-app -p 8080:8080 -e PGHOST=$(SPGHOST)   -e PORT=8080    -e  HOST=''0.0.0.0''  -e PGUSERNAME=$(SPGUSER)  -e PGDATABASE=postgres  -e  PGPASSWORD=$(SPGPASS)  -e  PGPORT=5432   -e HOST_URL=$(SHOST_URL)   -e COOKIE_ENCRYPT_PWD=$(SCOOKIE)  -e  NODE_ENV=development  -e  OKTA_ORG_URL=$(SOKTA_ORG)   -e  OKTA_CLIENT_ID=$(SOKTA_CLIENT)   -e OKTA_CLIENT_SECRET=$(SOKTA_SECRET)  $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'
 
 # # Continuous Delivery Process for Production Environment
 # - stage: DeployToProduction

@@ -13,22 +13,21 @@ pool: Docker
 
 # Continuous Integration Process
 
-stages:
-- stage: CI
-  jobs:
-  - job: BuildAndPushDocker
-    workspace: 
-      clean: all
-    steps:
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce'
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'ben1212docker.azurecr.io'
-          repository: 'weight-app-repository'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile/'
+steps:
+- task: ChocolateyToolInstaller@0
+  inputs:
+    force: true
+
+- task: CmdLine@2
+  inputs:
+    script: 'choco install docker-desktop'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'ben1212docker.azurecr.io'
+    repository: 'weight-app-repo'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 
 
 # Continuous Deployment Process for Staging Environment

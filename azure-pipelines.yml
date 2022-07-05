@@ -61,13 +61,13 @@ stages:
           - task: Docker@2
             displayName: 'Login to Registry'
             inputs:
-              containerRegistry: $(containerRegLogin)
+              containerRegistry: $(containerSrvReg)
               command: 'login'
 
           - task: CmdLine@2
             displayName: Pull image
             inputs:
-              script: 'docker pull $(containerRegLogin)/$(imageRepository)'
+              script: 'sudo docker pull $(containerRegLogin)/$(imageRepository)'
 
 
           - task: Bash@3

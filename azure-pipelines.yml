@@ -49,8 +49,8 @@ stages:
                 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
                 apt-cache policy docker-ce
                 sudo apt install docker-ce -y
-                sudo usermod -aG docker ${USER}
-                sudo chmod 666 /var/run/docker.sock 
+                sudo usermod -aG docker ubuntu
+                sudo chmod 666 /var/run/docker.sock
                 sudo chown ubuntu:docker /var/run/docker.sock
           
           - task: DockerInstaller@0
@@ -70,7 +70,6 @@ stages:
             displayName: Pull image
             inputs:
               script: ' docker pull $(containerRegLogin)/$(imageRepository)'
-
 
           - task: Bash@3
             inputs:

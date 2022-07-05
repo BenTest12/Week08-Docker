@@ -1,7 +1,7 @@
 name: Week08-Docker
 
 trigger:
-- master
+- main
 #- feature/*
 
 pool: Docker

@@ -78,7 +78,7 @@ stages:
 
 # Continuous Delivery Process for Production Environment
 - stage: DeployToProduction
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
   - deployment: production
     displayName: Deploy to Production

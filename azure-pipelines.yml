@@ -14,7 +14,7 @@ pool: Docker
 stages:
 
 # Continuous Integration Process
-- stage: CI
+- stage: dockinstall
   jobs:
   - job: BuildAndPushDocker
     workspace: 

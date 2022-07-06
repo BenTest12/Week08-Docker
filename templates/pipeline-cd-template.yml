@@ -13,7 +13,7 @@ steps:
           sudo chown ubuntu:docker /var/run/docker.sock
           
   - task: DockerInstaller@0
-      displayName: 'Install Docker 17.09.0-ce'
+      displayName: 'Install Docker 17.09.0-ce' 
           
   - task: CmdLine@2
       displayName: Stop Current Container

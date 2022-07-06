@@ -1,36 +1,37 @@
 steps:
  - task: CmdLine@2
-            inputs:
-              script: |
-                sudo apt update
-                sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-                sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-                apt-cache policy docker-ce
-                sudo apt install docker-ce -y
-                sudo usermod -aG docker ubuntu
-                sudo chmod 666 /var/run/docker.sock
-                sudo chown ubuntu:docker /var/run/docker.sock
+    inputs:
+      script: |
+        sudo apt update
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        apt-cache policy docker-ce
+        sudo apt install docker-ce -y
+        sudo usermod -aG docker ubuntu
+        sudo chmod 666 /var/run/docker.sock
+        sudo chown ubuntu:docker /var/run/docker.sock
           
-          - task: DockerInstaller@0
-            displayName: 'Install Docker 17.09.0-ce'
+  - task: DockerInstaller@0
+      displayName: 'Install Docker 17.09.0-ce'
           
-          - task: CmdLine@2
-            displayName: Stop Current Container
-            inputs:
-              script: 'docker rm -f weight-app || true'
-          - task: Docker@2
-            displayName: 'Login to Registry'
-            inputs:
-              containerRegistry: $(containerSrvReg)
-              command: 'login'
+  - task: CmdLine@2
+      displayName: Stop Current Container
+      inputs:
+        script: 'docker rm -f weight-app || true'
 
-          - task: CmdLine@2
-            displayName: Pull image
-            inputs:
-              script: ' docker pull $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'
+  - task: Docker@2
+      displayName: 'Login to Registry'
+      inputs:
+        containerRegistry: $(containerSrvReg)
+        command: 'login'
 
-          - task: Bash@3
-            inputs:
-             targetType: 'inline'
-             script: 'docker run --restart=always  -d --name weight-app -p 8080:8080 -e PGHOST=$(PGHOST)   -e PORT=8080    -e  HOST=''0.0.0.0''  -e PGUSERNAME=$(PGUSER)  -e PGDATABASE=postgres  -e  PGPASSWORD=$(PGPASS)  -e  PGPORT=5432   -e HOST_URL=$(HOST_URL)   -e COOKIE_ENCRYPT_PWD=$(COOKIE)  -e  NODE_ENV=development  -e  OKTA_ORG_URL=$(OKTA_ORG)   -e  OKTA_CLIENT_ID=$(OKTA_CLIENT)   -e OKTA_CLIENT_SECRET=$(OKTA_SECRET)  $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'
+  - task: CmdLine@2
+      displayName: Pull image
+      inputs:
+        script: ' docker pull $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'
+
+  - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'docker run --restart=always  -d --name weight-app -p 8080:8080 -e PGHOST=$(PGHOST)   -e PORT=8080    -e  HOST=''0.0.0.0''  -e PGUSERNAME=$(PGUSER)  -e PGDATABASE=postgres  -e  PGPASSWORD=$(PGPASS)  -e  PGPORT=5432   -e HOST_URL=$(HOST_URL)   -e COOKIE_ENCRYPT_PWD=$(COOKIE)  -e  NODE_ENV=development  -e  OKTA_ORG_URL=$(OKTA_ORG)   -e  OKTA_CLIENT_ID=$(OKTA_CLIENT)   -e OKTA_CLIENT_SECRET=$(OKTA_SECRET)  $(containerRegLogin)/$(imageRepository):$(Build.BuildId)'

@@ -1,5 +1,3 @@
-# pipeline
-
 name: Week08-Docker
 
 trigger:
